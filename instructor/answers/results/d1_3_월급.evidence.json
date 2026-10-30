@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d1_3_월급.py",
+  "started_at": "2026-10-31T00:34:28.551415+09:00",
+  "duration_sec": 0.46,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "51217f56e3deaabcdda95890b991843cbebcc58fe1af100adcf8d7dd63623507",
+  "output_sha256": "16f9c94219540a808b10b2a8e51ec1c5f53006d7dc5985972446a1dd4a853e7b",
+  "output_log": "instructor/answers/results/d1_3_월급.log",
+  "created_files": [
+    "instructor/answers/results/월급_분포.png"
+  ]
+}

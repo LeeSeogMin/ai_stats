@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d2_1_집단비교.py",
+  "started_at": "2026-10-31T00:34:29.015973+09:00",
+  "duration_sec": 0.91,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "0758c0376324b6aa560c350f66e833e5a6593724b0d708e7e4a79cfd3788eeb0",
+  "output_sha256": "5c4d84de76ac2161c1f6c7af546488a0d26be625f6613f10955697f6ea9dd980",
+  "output_log": "instructor/answers/results/d2_1_집단비교.log",
+  "created_files": [
+    "instructor/answers/results/참여별_만족도.png"
+  ]
+}

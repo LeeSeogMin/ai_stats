@@ -1,0 +1,15 @@
+{
+  "file": "instructor/answers/code/d2_2b_교차표.py",
+  "started_at": "2026-10-31T00:34:30.775807+09:00",
+  "duration_sec": 0.51,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "a5fda0a028fabfc405da9b20eb3827a23fa492e30961548b489be06e42f3bc71",
+  "output_sha256": "bcba829a3a520abec15eaa64f7d495a40c2c90210c3c7098bc2e7fa3d7748bfc",
+  "output_log": "instructor/answers/results/d2_2b_교차표.log",
+  "created_files": []
+}

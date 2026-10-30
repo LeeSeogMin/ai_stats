@@ -4,3 +4,8 @@ __pycache__/
 .ipynb_checkpoints/
 tmp/
 .gstack/
+outputs/code/*
+outputs/results/*
+!outputs/*/.gitkeep
+instructor/answers/results/*.png
+dist/

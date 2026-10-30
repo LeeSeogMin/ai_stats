@@ -1,0 +1,14 @@
+{
+  // 1교시에 설치한다. 폴더를 열면 VS Code가 오른쪽 아래에 「권장 확장 설치」를 띄운다.
+  "recommendations": [
+    "MS-CEINTL.vscode-language-pack-ko",
+    "GitHub.copilot-chat",
+    "anthropic.claude-code",
+    "ms-python.python",
+    "cweijan.vscode-office",
+    "tomoki1207.pdf",
+    "edwardkim.rhwp-vscode",
+    "mechatroner.rainbow-csv",
+    "ms-toolsai.datawrangler"
+  ]
+}

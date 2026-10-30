@@ -1,0 +1,15 @@
+{
+  "file": "instructor/answers/code/d1_4_틀린답_근거.py",
+  "started_at": "2026-10-31T00:34:55.215510+09:00",
+  "duration_sec": 0.23,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "ea59a6426fa19de2daaefe233b6abfe1647fe1264aa57553e1cb13f9b4e38c73",
+  "output_sha256": "7097f5477f44e1e9fcad2a6d76140121b178ee5d2623612c99d7978a78909352",
+  "output_log": "instructor/answers/results/d1_4_틀린답_근거.log",
+  "created_files": []
+}

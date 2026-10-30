@@ -1,0 +1,5 @@
+# 그래프 한글 글꼴 설정. 이 폴더에서 Python을 실행하면 matplotlib가 이 파일을 읽는다.
+# Windows는 맑은 고딕, macOS는 Apple SD Gothic Neo를 쓴다.
+font.family: sans-serif
+font.sans-serif: Malgun Gothic, Apple SD Gothic Neo, AppleGothic, NanumGothic, Noto Sans CJK KR, DejaVu Sans
+axes.unicode_minus: False

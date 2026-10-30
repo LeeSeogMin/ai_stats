@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d2_2a_광고매출.py",
+  "started_at": "2026-10-31T00:34:29.930748+09:00",
+  "duration_sec": 0.84,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "1866075d4eb408aa118f48ac5a94ad65e15cb0813d8fb0ae75435ace2367b6bc",
+  "output_sha256": "32549ff6acd931a97cd57139bbdbee600b4e2b55ba40aad74720421511c5d7e1",
+  "output_log": "instructor/answers/results/d2_2a_광고매출.log",
+  "created_files": [
+    "instructor/answers/results/광고비_매출.png"
+  ]
+}

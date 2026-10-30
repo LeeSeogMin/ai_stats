@@ -1,0 +1,14 @@
+# 「AI를 활용한 통계」 실습 패키지 (버전 고정)
+#
+# Windows의 스마트 앱 컨트롤(Smart App Control)이 켜져 있으면 평판이 쌓이지 않은
+# 최신 패키지의 DLL 로드를 막는다. 설치는 성공하고 import에서 실패한다.
+# geoAI 과목에서 2026-09-12 실측한 통과 버전(pandas 2.3.3, matplotlib 3.9.4,
+# statsmodels 0.14.6, numpy 2.2.6)으로 고정한다. 위로 올리지 않는다.
+# 경위: .ai/lessons-learned.md
+numpy==2.2.6
+pandas==2.3.3
+matplotlib==3.9.4
+statsmodels==0.14.6
+scipy==1.15.3
+seaborn==0.13.2
+openpyxl==3.1.5

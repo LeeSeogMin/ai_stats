@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d1_2a_명부정리.py",
+  "started_at": "2026-10-31T00:34:27.813759+09:00",
+  "duration_sec": 0.28,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "cda73d7eb4847fa5140962237eabb845155ad67d70bf1b03cd646fe51e24b7c6",
+  "output_sha256": "2fa348899e27e78884ee8eaa50731187f0b28796822a60db9e171b7870ae57f9",
+  "output_log": "instructor/answers/results/d1_2a_명부정리.log",
+  "created_files": [
+    "instructor/answers/results/이용자명부_정리.csv"
+  ]
+}

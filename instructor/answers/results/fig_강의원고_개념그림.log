@@ -1,0 +1,7 @@
+$ python instructor/answers/code/fig_강의원고_개념그림.py
+
+=== 화면 출력(STDOUT) ===
+그림 1: 평균 396, 중앙값 250
+그림 2: 아이스크림-사고 상관계수 0.90
+
+=== 오류·경고(STDERR) ===

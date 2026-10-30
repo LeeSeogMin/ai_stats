@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d1_2b_만족도_평균.py",
+  "started_at": "2026-10-31T00:34:28.099322+09:00",
+  "duration_sec": 0.45,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "922d9accccd9cdef98e4ef5ede05b5a81f9f9fa4427bb90fd35a0bd0d15af5c1",
+  "output_sha256": "6d2e4180e00b8e506a87607797c15bbb7a2988e4239320ef35bdf8dd92cddc0a",
+  "output_log": "instructor/answers/results/d1_2b_만족도_평균.log",
+  "created_files": [
+    "instructor/answers/results/만족도_분포.png"
+  ]
+}
