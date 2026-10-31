@@ -1,11 +1,8 @@
-.DS_Store
+# 가상환경과 캐시만 제외한다. 데이터·문서·결과물은 모두 git에 올린다(다른 컴퓨터로 옮기기 위해).
 .venv/
 __pycache__/
 .ipynb_checkpoints/
-tmp/
+.DS_Store
+# gstack 브라우저 도구의 실행 상태 파일
 .gstack/
-outputs/code/*
-outputs/results/*
-!outputs/*/.gitkeep
-instructor/answers/results/*.png
-dist/
+tmp/
