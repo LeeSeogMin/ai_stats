@@ -1,0 +1,15 @@
+{
+  "file": "instructor/answers/code/fig_강의원고_개념그림.py",
+  "started_at": "2026-11-09T08:34:07.880348+09:00",
+  "duration_sec": 0.64,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "ce7308e58787cb2026b4d24fa55721dd11180b197bd48a027b6caf2c7285b2ed",
+  "output_sha256": "f6af221787528a34bc26ea51aee1140ff764162be6e10563197656209c2cd272",
+  "output_log": "instructor/answers/results/fig_강의원고_개념그림.log",
+  "created_files": []
+}

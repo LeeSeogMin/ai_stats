@@ -4,11 +4,11 @@
 seed를 고정해 실행할 때마다 같은 파일을 만든다. 결과는 data/에 저장한다.
 모든 데이터는 실제 사람·기관과 무관한 가상 데이터다.
 
+공통 시나리오: ○○종합사회복지관 어르신 디지털 역량 강화 프로그램(스마트폰 교실, 8주)
+
 파일과 쓰는 교시:
-  이용자명부_원본.xlsx   1회차 2교시  지저분한 기록을 표로 정리하는 연습
-  만족도조사.csv         1회차 2교시, 2회차 1·2교시  평균·분포, 집단 비교, 교차표
-  채용공고_월급.csv      1회차 3교시  치우친 분포, 평균과 중앙값
-  가게_월별매출.csv      2회차 2교시  상관과 인과, 회귀선
+  욕구조사.csv            1회차 4교시(빈도·기술통계), 2회차 1교시(독립 두 집단 비교)
+  프로그램_사전사후.csv   2회차 2교시(같은 참여자의 사전·사후 비교)
 
 사용법 (프로젝트 최상위에서):
     .venv/bin/python instructor/make_data.py
@@ -25,121 +25,116 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SEED = 20261221
 
+# 디지털 역량 5문항: 문항별 난이도(값이 클수록 쉬움)
+ITEMS = {
+    "Q1": 0.6,   # 전화를 걸고 문자를 보낼 수 있다
+    "Q2": 0.2,   # 사진을 찍어 다른 사람에게 보낼 수 있다
+    "Q3": 0.0,   # 카카오톡으로 대화할 수 있다
+    "Q4": -0.5,  # 무인주문기(키오스크)로 주문할 수 있다
+    "Q5": -0.7,  # 인터넷뱅킹으로 돈을 보낼 수 있다
+}
+FUNCS = ["전화·문자", "사진·영상", "카카오톡", "무인주문기(키오스크)", "인터넷뱅킹"]
 
-def make_survey(rng: np.random.Generator) -> pd.DataFrame:
-    """복지관 이용자 만족도 조사 300명.
 
-    설계: 이용기간이 길수록 프로그램 참여 확률과 만족도가 함께 높다.
-    그래서 참여자와 미참여자의 만족도 차이 일부는 이용기간 때문이다.
+def to_items(rng: np.random.Generator, ability: np.ndarray, noise: float) -> np.ndarray:
+    """잠재 역량을 1~5점 문항 5개로 바꾼다."""
+    cols = [
+        np.clip(np.round(ability + off + rng.normal(0, noise, len(ability))), 1, 5)
+        for off in ITEMS.values()
+    ]
+    return np.column_stack(cols).astype(int)
+
+
+def make_needs(rng: np.random.Generator) -> pd.DataFrame:
+    """기획 단계: 지역 어르신 디지털 이용 욕구조사 300명.
+
+    설계: 독거 어르신의 역량이 낮다. 나이가 많을수록 낮고, 교육수준이 높을수록 높다.
+    문항마다 2% 안팎으로 무응답(9)을 넣는다.
     """
     n = 300
-    gender = rng.choice(["여", "남"], size=n, p=[0.62, 0.38])
-    age = rng.choice(["20대", "30대", "40대", "50대", "60대", "70대 이상"], size=n,
-                     p=[0.06, 0.10, 0.16, 0.22, 0.26, 0.20])
-    months = np.clip(np.round(rng.gamma(shape=2.0, scale=10.0, size=n)), 1, 72).astype(int)
-    p_join = 1 / (1 + np.exp(-(months - 20) / 8))
-    joined = rng.random(n) < p_join
+    gender = rng.choice(["여", "남"], n, p=[0.6, 0.4])
+    age = np.clip(np.round(65 + rng.gamma(2.2, 4.2, n)), 65, 92).astype(int)
+    house = rng.choice(["독거", "부부", "자녀동거"], n, p=[0.35, 0.45, 0.20])
+    edu_level = rng.choice([0, 1, 2], n, p=[0.4, 0.3, 0.3])
+    phone = rng.random(n) < 0.86
 
-    latent = 4.25 + 0.012 * months + 0.12 * joined + rng.normal(0, 0.55, n)
-    # 일부 응답자는 불만이 크다: 낮은 점수 쪽 꼬리
-    unhappy = rng.random(n) < 0.07
-    latent[unhappy] = rng.uniform(0.6, 2.4, unhappy.sum())
-    overall = np.clip(np.round(latent), 1, 5).astype(int)
-    staff = np.clip(np.round(latent + rng.normal(0.15, 0.5, n)), 1, 5).astype(int)
-    facility = np.clip(np.round(latent + rng.normal(-0.35, 0.6, n)), 1, 5).astype(int)
-    revisit = np.where(overall >= 4, rng.random(n) < 0.9, rng.random(n) < 0.35)
+    ability = (
+        3.25
+        - 0.045 * (age - 65)
+        + 0.35 * edu_level
+        - 0.35 * (house == "독거")
+        - 0.6 * (~phone)
+        + rng.normal(0, 0.5, n)
+    )
+    items = to_items(rng, ability, 0.55)
+    hardest = [FUNCS[int(np.argmin(row + rng.uniform(0, 0.9, 5)))] for row in items]
+
+    p_will = 0.42 + 0.16 * (house == "독거") - 0.05 * (ability - ability.mean())
+    u = rng.random(n)
+    will = np.where(u < p_will, "있다", np.where(u < p_will + 0.3, "모르겠다", "없다"))
 
     df = pd.DataFrame({
-        "응답자ID": [f"R{i:03d}" for i in range(1, n + 1)],
+        "응답자ID": [f"N{i:03d}" for i in range(1, n + 1)],
         "성별": gender,
-        "연령대": age,
-        "이용기간_개월": months,
-        "프로그램참여": np.where(joined, "참여", "미참여"),
-        "만족도_전반": overall.astype(float),
-        "만족도_직원친절": staff,
-        "만족도_시설": facility,
-        "재이용의향": np.where(revisit, "예", "아니오"),
+        "연령": age,
+        "연령대": pd.cut(age, [64, 69, 74, 79, 200], labels=["65~69세", "70~74세", "75~79세", "80세 이상"]).astype(str),
+        "가구형태": house,
+        "교육수준": np.array(["초졸 이하", "중졸", "고졸 이상"])[edu_level],
+        "스마트폰보유": np.where(phone, "예", "아니오"),
+        "가장어려운기능": hardest,
     })
-    missing = rng.choice(n, size=12, replace=False)
-    df.loc[missing, "만족도_전반"] = np.nan
-    df["만족도_전반"] = df["만족도_전반"].astype("Int64")
+    for j, q in enumerate(ITEMS):
+        col = items[:, j].copy()
+        col[rng.random(n) < 0.02] = 9      # 무응답 코드
+        df[f"디지털역량_{q}"] = col
+    df["교육참여의향"] = will
     return df
 
 
-def make_salary(rng: np.random.Generator) -> pd.DataFrame:
-    """채용공고 200건. 대부분 220~300만 원, 관리직 소수가 고액."""
-    n_normal, n_high = 186, 14
-    jobs = ["사회복지사", "요양보호사", "사무보조", "상담원", "생활지도원", "행정직"]
-    regions = ["서울", "경기", "인천", "충청", "기타"]
-    normal = np.clip(np.round(rng.normal(255, 24, n_normal) / 5) * 5, 210, 330)
-    high = np.round(rng.uniform(600, 1200, n_high) / 10) * 10
-    df = pd.DataFrame({
-        "직무": list(rng.choice(jobs, n_normal)) + ["센터장·관리직"] * n_high,
-        "지역": rng.choice(regions, n_normal + n_high, p=[0.3, 0.35, 0.1, 0.15, 0.1]),
-        "고용형태": list(rng.choice(["정규직", "계약직"], n_normal, p=[0.55, 0.45])) + ["정규직"] * n_high,
-        "월급_만원": np.concatenate([normal, high]).astype(int),
-    })
-    df = df.sample(frac=1, random_state=SEED).reset_index(drop=True)
-    df.insert(0, "공고ID", [f"J{i:03d}" for i in range(1, len(df) + 1)])
-    return df
+def make_prepost(rng: np.random.Generator) -> pd.DataFrame:
+    """평가 단계: 참여자 40명과 대기자 36명의 사전·사후 설문.
 
-
-def make_store(rng: np.random.Generator) -> pd.DataFrame:
-    """동네 카페 36개월. 성수기(7·8·12월)에 광고비와 매출이 함께 오른다.
-
-    설계상 광고비 1만 원이 늘 때 매출은 약 0.8만 원만 는다.
-    성수기를 고려하지 않으면 광고비의 효과가 훨씬 크게 보인다.
+    설계: 사람마다 원래 역량 차이가 크고(사람 간 표준편차 약 0.75), 8주 동안의 변화는
+    참여자 +0.4점, 대기자 +0.05점 안팎이다. 같은 사람의 사전·사후가 강하게 연결되므로
+    대응표본 검정은 차이를 뚜렷하게 잡고, 독립표본 검정으로 잘못 분석하면 p값이 훨씬 크다.
+    참여자 2명은 중도탈락해 사후 응답이 없다.
     """
-    months = pd.period_range("2024-01", "2026-12", freq="M")
-    peak = np.isin(months.month, [7, 8, 12])
-    ad = np.round(100 + 150 * peak + rng.normal(0, 35, len(months)))
-    sales = np.round(2000 + 1500 * peak + 0.8 * ad + rng.normal(0, 120, len(months)))
-    return pd.DataFrame({
-        "연월": months.astype(str),
-        "성수기": np.where(peak, "예", "아니오"),
-        "광고비_만원": ad.astype(int),
-        "매출_만원": sales.astype(int),
-    })
-
-
-def make_roster(rng: np.random.Generator) -> pd.DataFrame:
-    """손으로 적은 이용자 명부를 옮긴 듯한 지저분한 기록 40행(37명 + 중복 3행)."""
-    n = 37
-    days = pd.to_datetime("2026-03-02") + pd.to_timedelta(rng.integers(0, 60, n), unit="D")
-    fmt = rng.choice(["iso", "dot", "kor"], n, p=[0.5, 0.3, 0.2])
-    date_txt = [
-        d.strftime("%Y-%m-%d") if f == "iso"
-        else f"{d.year}.{d.month}.{d.day}" if f == "dot"
-        else f"{d.month}월 {d.day}일"
-        for d, f in zip(days, fmt)
-    ]
-    sat_num = rng.choice([5, 4, 3, 2], n, p=[0.4, 0.35, 0.18, 0.07])
-    word = {5: "매우 만족", 4: "만족", 3: "보통", 2: "불만"}
-    style = rng.choice(["num", "word", "blank"], n, p=[0.6, 0.32, 0.08])
-    sat = [str(s) if st == "num" else word[s] if st == "word" else "" for s, st in zip(sat_num, style)]
-    df = pd.DataFrame({
-        "이용자": [f"이용자{i:02d}" for i in range(1, n + 1)],
-        "방문일": date_txt,
-        "연령대": rng.choice(["50대", "60대", "70대", "70대 이상", "60 대"], n, p=[0.2, 0.3, 0.25, 0.2, 0.05]),
-        "프로그램": rng.choice(["건강체조", "스마트폰 교실", "노래교실", "건강 체조"], n, p=[0.35, 0.3, 0.25, 0.1]),
-        "만족도": sat,
-        "비고": [""] * n,
-    })
-    dup = df.iloc[[3, 11, 25]].copy()
-    dup["비고"] = "재입력"
-    df = pd.concat([df, dup]).sample(frac=1, random_state=SEED).reset_index(drop=True)
+    groups = [("참여", "P", 40, 0.40), ("대기", "W", 36, 0.05)]
+    rows = []
+    for name, prefix, n, gain in groups:
+        base = rng.normal(2.45, 0.75, n)
+        change = gain + rng.normal(0, 0.25, n)
+        pre = to_items(rng, base, 0.35)
+        post = to_items(rng, base + change, 0.35)
+        age = np.clip(np.round(65 + rng.gamma(2.2, 4.0, n)), 65, 88).astype(int)
+        gender = rng.choice(["여", "남"], n, p=[0.65, 0.35])
+        for i in range(n):
+            rows.append({
+                "ID": f"{prefix}{i + 1:02d}",
+                "집단": name,
+                "성별": gender[i],
+                "연령": age[i],
+                **{f"사전_{q}": pre[i, j] for j, q in enumerate(ITEMS)},
+                **{f"사후_{q}": post[i, j] for j, q in enumerate(ITEMS)},
+                "출석회차": int(rng.integers(5, 9)) if name == "참여" else 0,
+                "만족도": int(np.clip(np.round(rng.normal(4.2, 0.7)), 1, 5)) if name == "참여" else np.nan,
+            })
+    df = pd.DataFrame(rows)
+    drop = df.index[df["ID"].isin(["P07", "P23"])]
+    df.loc[drop, [f"사후_{q}" for q in ITEMS] + ["만족도"]] = np.nan
+    df.loc[drop, "출석회차"] = [2, 3]
+    for c in [f"사후_{q}" for q in ITEMS] + ["만족도"]:
+        df[c] = df[c].astype("Int64")
     return df
 
 
 def main() -> None:
     DATA.mkdir(exist_ok=True)
     rng = np.random.default_rng(SEED)
-    make_roster(rng).to_excel(DATA / "이용자명부_원본.xlsx", index=False)
     # Excel에서 한글이 깨지지 않게 BOM 포함 UTF-8로 저장한다.
-    make_survey(rng).to_csv(DATA / "만족도조사.csv", index=False, encoding="utf-8-sig")
-    make_salary(rng).to_csv(DATA / "채용공고_월급.csv", index=False, encoding="utf-8-sig")
-    make_store(rng).to_csv(DATA / "가게_월별매출.csv", index=False, encoding="utf-8-sig")
-    for p in sorted(DATA.glob("*.*")):
+    make_needs(rng).to_csv(DATA / "욕구조사.csv", index=False, encoding="utf-8-sig")
+    make_prepost(rng).to_csv(DATA / "프로그램_사전사후.csv", index=False, encoding="utf-8-sig")
+    for p in sorted(DATA.glob("*.csv")):
         print(f"만든 파일: {p.relative_to(ROOT).as_posix()}")
 
 

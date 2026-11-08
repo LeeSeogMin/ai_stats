@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d2_2a_사전사후.py",
+  "started_at": "2026-11-09T08:34:06.524434+09:00",
+  "duration_sec": 0.79,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "235714412613e032bde6409f13863db299d9361856b77df43d48b5bc37c7ba1c",
+  "output_sha256": "73e2b9c116071cc299336db28331c72b213cad8445c5d8b137fc7db31c746a69",
+  "output_log": "instructor/answers/results/d2_2a_사전사후.log",
+  "created_files": [
+    "instructor/answers/results/사전사후.png"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "file": "instructor/answers/code/d1_4_빈도_기술통계.py",
+  "started_at": "2026-11-09T08:34:17.234521+09:00",
+  "duration_sec": 0.47,
+  "exit_code": 0,
+  "timed_out": false,
+  "success": true,
+  "python_version": "3.12.11",
+  "python_executable": "/Users/callii/Documents/class/2026-2/ai_stats/.venv/bin/python",
+  "platform": "macOS-14.3.1-arm64-arm-64bit",
+  "source_sha256": "dddf02181ffe5b98a9a9872528f19699616bf05881a96cd9b2d49d89603abf0b",
+  "output_sha256": "72db2429635c0fc328acf9bd11a9538185c6265757ba13a499ce13f593a96901",
+  "output_log": "instructor/answers/results/d1_4_빈도_기술통계.log",
+  "created_files": [
+    "instructor/answers/results/문항별_평균.png"
+  ]
+}
