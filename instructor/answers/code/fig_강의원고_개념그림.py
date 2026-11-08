@@ -7,8 +7,10 @@ from scipy import stats
 v = [2, 3, 3, 4, 20]
 fig, ax = plt.subplots(figsize=(6, 2.6))
 ax.scatter(v, [0] * len(v), s=80, color="#4C72B0", zorder=3)
-for x in sorted(set(v)):
-    ax.annotate(f"{x}회" + (" ×2" if v.count(x) > 1 else ""), (x, 0), textcoords="offset points", xytext=(0, 10), ha="center")
+# 가까운 점의 글자가 겹치지 않게 위아래로 번갈아 적는다.
+for k, x in enumerate(sorted(set(v))):
+    label = f"{x}회" + (" (2명)" if v.count(x) > 1 else "")
+    ax.annotate(label, (x, 0), textcoords="offset points", xytext=(0, 12 if k % 2 == 0 else -20), ha="center")
 ax.axvline(np.mean(v), color="red", linestyle="--", label=f"평균 {np.mean(v):.1f}회")
 ax.axvline(np.median(v), color="green", label=f"중앙값 {np.median(v):.0f}회")
 ax.set_yticks([])
